@@ -10,6 +10,8 @@ from pytube import YouTube
 import socket
 from datetime import datetime
 import string
+from random import randint
+import utils
 
 app = typer.Typer()
 
@@ -22,20 +24,10 @@ def genpass(length: int, strong: bool = False, copy: bool = True):
     if (length < 5):
         print("Password can't be that short")
         return
-    letters = string.ascii_letters
-    sc = string.punctuation
-    digits = string.digits
-    alphabet = letters + digits + sc
-    ans = ''
-    if not strong:
-        for i in range(length):
-            ans += ''.join(secrets.choice(letters))
-    else:
-        for i in range(length):
-            ans += ''.join(secrets.choice(alphabet))
+    pwd = utils.generate_password(length, strong)
     if copy:
-        pyperclip.copy(ans)
-    print(ans)
+        pyperclip.copy(pwd)
+    print(pwd)
 
 
 @app.command(help="Generates a random hex token. copy='copy to clipboard' and defaults to true")
@@ -46,7 +38,7 @@ def hex_token(length: int = 16, copy: bool = True):
     print(token)
 
 
-@app.command()
+@app.command(help="Shows a bunch of information about underlying system")
 def check_system():
     info = (
         ("Operating System", platform.system()),
@@ -60,7 +52,7 @@ def check_system():
     print(tabulate(info))
 
 
-@app.command("yt")
+@app.command("yt", help="Downloads the youtube video by its link")
 def youtube(link: str, name: str = ""):
     save_path = str(Path.home() / "downloads")
     youtubeObject = YouTube(link)
@@ -75,7 +67,7 @@ def youtube(link: str, name: str = ""):
     print("Download is completed successfully")
 
 
-@app.command()
+@app.command(help="Returns a random motivational quote")
 def motivate_me():
     data = requests.get("https://zenquotes.io/api/random")
     quote = data.json()[0]['q']
@@ -83,7 +75,15 @@ def motivate_me():
     print(quote, author, sep='  ')
 
 
-@app.command()
+@app.command("Generates a random hex color")
+def random_color():
+    color = '#'
+    for i in range(3):
+        color += format(randint(0, 255), 'x')
+    print(color)
+
+
+@app.command(help="Shows your public ip address")
 def my_ip():
     hostname = socket.gethostname()
     print(socket.gethostbyname(hostname))
