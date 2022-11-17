@@ -12,6 +12,8 @@ from datetime import datetime
 import string
 from random import randint
 import utils
+from time import sleep
+import sys
 
 app = typer.Typer()
 
@@ -87,6 +89,41 @@ def random_color():
 def my_ip():
     hostname = socket.gethostname()
     print(socket.gethostbyname(hostname))
+
+
+@app.command()
+def focus(minutes: int = 30):
+    seconds = minutes * 60
+    while seconds > 0:
+        h, m, s = utils.parse_time_from_secs(seconds)
+        h_str = str(h) if h > 9 else '0' + str(h)
+        m_str = str(m) if m > 9 else '0' + str(m)
+        s_str = str(s) if s > 9 else '0' + str(s)
+        sys.stdout.write(
+            f'Please focus! Time remaining - {h_str}:{m_str}:{s_str}\r')
+        seconds -= 1
+        sleep(1)
+        sys.stdout.flush()
+    else:
+        sys.stdout.write(
+            f'Please focus! Time remaining - 00:00\r')
+
+
+@app.command()
+def world_time(continent: str, city: str, show_date: bool = False):
+    try:
+        res = requests.get(
+            f'http://worldtimeapi.org/api/timezone/{continent.capitalize()}/{city.capitalize()}')
+        dt = res.json()['datetime']
+        time_part = datetime.fromisoformat(dt).time()
+        date_part = datetime.fromisoformat(dt).date()
+        time_part_as_clock = ":".join(str(time_part).split(":")[0:2])
+        if show_date:
+            print(date_part, time_part_as_clock)
+        else:
+            print(time_part_as_clock)
+    except:
+        print("Could not detect area provided")
 
 
 if __name__ == "__main__":
