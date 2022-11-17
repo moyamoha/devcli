@@ -77,7 +77,7 @@ def motivate_me():
     print(quote, author, sep='  ')
 
 
-@app.command("Generates a random hex color")
+@app.command(help="Generates a random hex color")
 def random_color():
     color = '#'
     for i in range(3):
@@ -91,7 +91,7 @@ def my_ip():
     print(socket.gethostbyname(hostname))
 
 
-@app.command()
+@app.command(help="Helps you focus for given amount of minutes")
 def focus(minutes: int = 30):
     seconds = minutes * 60
     while seconds > 0:
@@ -109,7 +109,7 @@ def focus(minutes: int = 30):
             f'Please focus! Time remaining - 00:00\r')
 
 
-@app.command()
+@app.command(help="Shows time for the provided timezone")
 def world_time(continent: str, city: str, show_date: bool = False):
     try:
         res = requests.get(
@@ -124,6 +124,18 @@ def world_time(continent: str, city: str, show_date: bool = False):
             print(time_part_as_clock)
     except:
         print("Could not detect area provided")
+
+
+@app.command(help="""
+Tired of 'git add -A', 'git commit -m \{msg\}' and 'git push'? Here is the solution 😎.
+""")
+def gacp(msg: str):
+    try:
+        os.system('git add -A')
+        os.system(f'git commit -m "{msg}"')
+        os.system('git push')
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
