@@ -132,6 +132,7 @@ Tired of 'git add -A', 'git commit -m \{msg\}' and 'git push'? Here is the solut
 def gacp(msg: str):
     remote = os.popen('git remote').read().strip()
     branch = os.popen('git branch').read()
+    print(branch)
     try:
         os.system('git add -A')
         os.system(f'git commit -m "{msg}"')
