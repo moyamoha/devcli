@@ -130,13 +130,10 @@ def world_time(continent: str, city: str, show_date: bool = False):
 Tired of 'git add -A', 'git commit -m \{msg\}' and 'git push'? Here is the solution 😎.
 """)
 def gacp(msg: str):
-    remote = os.popen('git remote').read().strip()
-    branch = os.popen('git branch').read()
-    print(branch)
     try:
         os.system('git add -A')
         os.system(f'git commit -m "{msg}"')
-        os.system(f'git push --set-upstream {remote} {branch}')
+        os.system(f'git push')
     except Exception as e:
         print(e)
 
