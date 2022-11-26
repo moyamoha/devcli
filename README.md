@@ -1,4 +1,4 @@
-This is a very simple cli for my personal use.
+This is a very simple cli I built to practice python
 
 ### How to get started
 
