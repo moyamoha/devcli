@@ -9,7 +9,6 @@ from tabulate import tabulate
 from pytube import YouTube
 import socket
 from datetime import datetime
-import string
 from random import randint
 import utils
 from time import sleep
@@ -111,19 +110,10 @@ def focus(minutes: int = 30):
 
 @app.command(help="Shows time for the provided timezone")
 def world_time(continent: str, city: str, show_date: bool = False):
-    try:
-        res = requests.get(
-            f'http://worldtimeapi.org/api/timezone/{continent.capitalize()}/{city.capitalize()}')
-        dt = res.json()['datetime']
-        time_part = datetime.fromisoformat(dt).time()
-        date_part = datetime.fromisoformat(dt).date()
-        time_part_as_clock = ":".join(str(time_part).split(":")[0:2])
-        if show_date:
-            print(date_part, time_part_as_clock)
-        else:
-            print(time_part_as_clock)
-    except:
-        print("Could not detect area provided")
+    tz = f'{continent.capitalize()}/{city.capitalize()}'
+    is_succesful = utils.fetch_time(tz, show_date)
+    while not is_succesful:
+        is_succesful = utils.fetch_time(tz, show_date=show_date)
 
 
 @app.command(help="""
@@ -148,6 +138,9 @@ def i_am_bored():
 def tell_me_a_joke():
     req = requests.get("https://v2.jokeapi.dev/joke/Any?safe-mode")
     data = req.json()
+    if randint(1, 1000) == 500:
+        print('Your life.')
+        return
     if data['type'] == 'single':
         print(data['joke'])
     else:
