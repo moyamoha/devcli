@@ -119,12 +119,12 @@ def world_time(continent: str, city: str, show_date: bool = False):
 @app.command(help="""
 Tired of 'git add -A', 'git commit -m \{msg\}' and 'git push'? Here is the solution 😎.
 """)
-def gacp(m: str = ""):
+def gacp(m: str = "", origin: str = "origin", branch: str = "master"):
     message = f'Changes on {str(datetime.now())}' if m == '' else m
     try:
         os.system('git add -A')
         os.system(f'git commit -m "{message}"')
-        os.system(f'git push')
+        os.system(f'git push {origin} {branch}')
     except Exception as e:
         print(e)
 
