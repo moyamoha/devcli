@@ -121,10 +121,11 @@ Tired of 'git add -A', 'git commit -m \{msg\}' and 'git push'? Here is the solut
 """)
 def gacp(m: str = "", origin: str = "origin", branch: str = "master"):
     message = f'Changes on {str(datetime.now())}' if m == '' else m
+    b = branch if branch else "$(git branch --show-current)"
     try:
         os.system('git add -A')
         os.system(f'git commit -m "{message}"')
-        os.system(f'git push {origin} {branch}')
+        os.system(f'git push {origin} {b}')
     except Exception as e:
         print(e)
 

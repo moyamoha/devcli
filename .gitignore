@@ -1,4 +1,4 @@
-venv/
+devclivenv/
 dist/
 build/
 *.spec
