@@ -129,12 +129,6 @@ def gacp(m: str = "", origin: str = "origin", branch: str = "master"):
     except Exception as e:
         print(e)
 
-
-@app.command()
-def i_am_bored():
-    req = requests.get("https://www.boredapi.com/api/activity")
-    print(req.json().get('activity'))
-
 @app.command()
 def tell_me_a_joke():
     req = requests.get("https://v2.jokeapi.dev/joke/Any?safe-mode")
